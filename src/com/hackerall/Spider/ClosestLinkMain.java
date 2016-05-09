@@ -2,13 +2,13 @@ package com.hackerall.Spider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 主controller类
  * Created by ChenLetian on 16/5/9.
  */
 public class ClosestLinkMain {
@@ -21,7 +21,7 @@ public class ClosestLinkMain {
     private JScrollPane resultScrollPane;
 
     // 结果的节点集
-    private Vector<SearchNode> resultNode = new Vector();
+    private Vector<SearchNode> resultNode = new Vector<>();
     // 用来标注是否搜索已经结束,用于多线程的控制
     boolean ended = false;
 
@@ -42,7 +42,7 @@ public class ClosestLinkMain {
      */
     private void searchLink(String fromURL, String toURL) {
         // 每次搜索前清空上次搜索的结果
-        resultNode = new Vector();
+        resultNode = new Vector<>();
         resultTextArea.setText("搜索中...");
         new Thread(() -> {
             /*
@@ -92,7 +92,7 @@ public class ClosestLinkMain {
             /*
              已经加过的queue的URL就不用加了,所以维护了addedURL保存已经加过queue的URL
              */
-            TreeSet addedURL = new TreeSet<String>();
+            TreeSet<String> addedURL = new TreeSet<>();
             addedURL.add(fromURL);
 
             // 队头索引
