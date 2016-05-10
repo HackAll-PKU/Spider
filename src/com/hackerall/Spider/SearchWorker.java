@@ -87,17 +87,20 @@ public class SearchWorker {
         queue.add(new SearchNode(null, fromURL, -1));
         addedURL.add(fromURL);
         //根据系统资源建立线程池
-        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int threadNumber = 20;
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(threadNumber);
         new Thread(() -> {
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < threadNumber; i++) {
                 Thread thread = new Thread(this::searchLink);
                 thread.setName("SearchWorker" + String.valueOf(i));
-                //fixedThreadPool.execute(thread);
-                thread.start();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    System.out.println(e);
+                fixedThreadPool.execute(thread);
+                //thread.start();
+                if (i == 0) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        System.out.println(e);
+                    }
                 }
             }
         }).start();
