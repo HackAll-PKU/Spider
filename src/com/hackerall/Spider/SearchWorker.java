@@ -89,10 +89,10 @@ public class SearchWorker {
         //根据系统资源建立线程池
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 fixedThreadPool.execute(new Thread(this::searchLink));
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     System.out.println(e);
                 }
