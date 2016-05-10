@@ -2,6 +2,7 @@
 - Java Class Assignment
 - 一个小爬虫，可以找到从一个URL到另一个URL之间的最短链接路径
 - 如![example.png](./example.png)
+- 可执行的jar位于[./out/artifacts/Spider_jar/Spider.jar](./out/artifacts/Spider_jar/Spider.jar)
 - [Github地址](https://github.com/HackAll-PKU/Spider)
 
 ## 项目结构
