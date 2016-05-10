@@ -88,7 +88,16 @@ public class SearchWorker {
         addedURL.add(fromURL);
         //根据系统资源建立线程池
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        fixedThreadPool.execute(new Thread(this::searchLink));
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                fixedThreadPool.execute(new Thread(this::searchLink));
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        }).start();
     }
 
     /**
