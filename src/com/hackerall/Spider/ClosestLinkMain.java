@@ -2,8 +2,6 @@ package com.hackerall.Spider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * 主controller类
@@ -17,19 +15,24 @@ public class ClosestLinkMain implements SearchEndDelegate {
     private JTextArea resultTextArea;
     private JButton findClosestButton;
     private JScrollPane resultScrollPane;
+    private JButton cancelButton;
 
     private Timer searchAnimationTimer;
     private int searchAnimationCounter;
 
+    SearchWorker worker;
+
     public ClosestLinkMain() {
         // 因为后面要画字符的箭头,所以要用等宽字体
         resultTextArea.setFont(new Font("Monospaced", Font.PLAIN, 20));
+
         findClosestButton.addActionListener(e -> {
             String fromURL = fromTextField.getText();
             String toURL = toTextField.getText();
             fromTextField.setEnabled(false);
             toTextField.setEnabled(false);
             findClosestButton.setEnabled(false);
+            cancelButton.setEnabled(true);
             searchAnimationCounter = 0;
             searchAnimationTimer = new Timer(300, e1 -> {
                 searchAnimationCounter++;
@@ -43,10 +46,15 @@ public class ClosestLinkMain implements SearchEndDelegate {
                     searchAnimationCounter = 0;
                 }
             });
+            worker = new SearchWorker(fromURL, toURL, this);
             searchAnimationTimer.start();
-            SearchWorker worker = new SearchWorker(fromURL, toURL, this);
             worker.startSearch();
         });
+        cancelButton.addActionListener(e -> {
+            worker.ended = true;
+            searchDidSuccessWithResult("用户取消");
+        });
+        cancelButton.setEnabled(false);
     }
 
     @Override
@@ -57,6 +65,7 @@ public class ClosestLinkMain implements SearchEndDelegate {
             fromTextField.setEnabled(true);
             toTextField.setEnabled(true);
             findClosestButton.setEnabled(true);
+            cancelButton.setEnabled(false);
         });
     }
 

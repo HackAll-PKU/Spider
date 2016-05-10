@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class SearchWorker {
 
-    private boolean ended = false;
+    public boolean ended = false;
     private String fromURL;
     private String toURL;
 
