@@ -2,6 +2,8 @@ package com.hackerall.Spider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * 主controller类
@@ -16,6 +18,9 @@ public class ClosestLinkMain implements SearchEndDelegate {
     private JButton findClosestButton;
     private JScrollPane resultScrollPane;
 
+    private Timer searchAnimationTimer;
+    private int searchAnimationCounter;
+
     public ClosestLinkMain() {
         // 因为后面要画字符的箭头,所以要用等宽字体
         resultTextArea.setFont(new Font("Monospaced", Font.PLAIN, 20));
@@ -25,7 +30,20 @@ public class ClosestLinkMain implements SearchEndDelegate {
             fromTextField.setEnabled(false);
             toTextField.setEnabled(false);
             findClosestButton.setEnabled(false);
-            resultTextArea.setText("搜索中...");
+            searchAnimationCounter = 0;
+            searchAnimationTimer = new Timer(300, e1 -> {
+                searchAnimationCounter++;
+                String searchText = "搜索中";
+                for (int i = 0;i <searchAnimationCounter; i++) {
+                    searchText += ".";
+                }
+                final String outputText = searchText;
+                SwingUtilities.invokeLater(() -> resultTextArea.setText(outputText));
+                if (searchAnimationCounter == 3) {
+                    searchAnimationCounter = 0;
+                }
+            });
+            searchAnimationTimer.start();
             SearchWorker worker = new SearchWorker(fromURL, toURL, this);
             worker.startSearch();
         });
@@ -33,6 +51,7 @@ public class ClosestLinkMain implements SearchEndDelegate {
 
     @Override
     public void searchDidSuccessWithResult(String result) {
+        searchAnimationTimer.stop();
         SwingUtilities.invokeLater(() -> {
             resultTextArea.setText(result);
             fromTextField.setEnabled(true);
