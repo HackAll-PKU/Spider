@@ -90,7 +90,10 @@ public class SearchWorker {
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         new Thread(() -> {
             for (int i = 0; i < 20; i++) {
-                fixedThreadPool.execute(new Thread(this::searchLink));
+                Thread thread = new Thread(this::searchLink);
+                thread.setName("SearchWorker" + String.valueOf(i));
+                //fixedThreadPool.execute(thread);
+                thread.start();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
